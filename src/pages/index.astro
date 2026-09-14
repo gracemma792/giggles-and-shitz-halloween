@@ -150,27 +150,87 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
     </main>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
-      const pizzaSection = document.querySelector('#pizza');
-      const attendanceInputs = document.querySelectorAll('input[name="attending"]');
+  const pizzaSection = document.querySelector('#pizza');
+  const attendanceInputs = document.querySelectorAll('input[name="attending"]');
+  const jumpscare = document.querySelector('#rsvp-jumpscare');
 
-      function updatePizzaVisibility() {
-        const yesSelected = document.querySelector('input[name="attending"][value="Yes"]:checked');
-        pizzaSection?.classList.toggle('is-hidden', !yesSelected);
+  function updatePizzaVisibility() {
+    const yesSelected = document.querySelector(
+      'input[name="attending"][value="Yes"]:checked'
+    );
+
+    pizzaSection?.classList.toggle('is-hidden', !yesSelected);
+  }
+
+  attendanceInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      updatePizzaVisibility();
+
+      if (input.value === 'Yes' && input.checked && jumpscare) {
+        jumpscare.classList.remove('active');
+        void jumpscare.offsetWidth;
+        jumpscare.classList.add('active');
+
+        setTimeout(() => {
+          pizzaSection?.classList.remove('is-hidden');
+        }, 1600);
+      }
+    });
+  });
+
+  document.querySelectorAll('form').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const button = form.querySelector('button[type="submit"]');
+      const message = form.querySelector('.form-message');
+      const originalText = button?.innerHTML;
+
+      if (button) {
+        button.disabled = true;
+        button.innerHTML = 'Sending...';
       }
 
-      const jumpscare = document.querySelector("#rsvp-jumpscare");
-      attendanceInputs.forEach((input) => {
-        input.addEventListener("change", () => {
-          if (input.value === "Yes" && input.checked && jumpscare) {
-            jumpscare.classList.remove("active");
-            void jumpscare.offsetWidth;
-            jumpscare.classList.add("active");
-            setTimeout(() => {
-              pizzaSection?.classList.remove("is-hidden");
-            }, 1600);
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            Accept: 'application/json'
           }
         });
-      });
-    </script>
+
+        if (!response.ok) {
+          throw new Error('Form submission failed');
+        }
+
+        if (form.dataset.form === 'rsvp') {
+          if (message) {
+            message.textContent = 'RSVP received 👻';
+          }
+        }
+
+        if (form.dataset.form === 'pizza') {
+          if (message) {
+            message.textContent = 'Pizza order received 🍕';
+          }
+        }
+
+        if (button) {
+          button.innerHTML = 'Sent ✓';
+        }
+      } catch (error) {
+        if (message) {
+          message.textContent = 'Oops, something went wrong. Please try again.';
+        }
+
+        if (button) {
+          button.disabled = false;
+          button.innerHTML = originalText;
+        }
+      }
+    });
+  });
+</script>
   </body>
 </html>

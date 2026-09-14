@@ -154,3 +154,27 @@
   object-fit: contain;
   margin: 0 auto;
 }
+
+@media (max-width: 720px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .poster {
+    max-width: calc(100vw - 40px);
+  }
+
+  .rsvp-grid,
+  .pizza-section,
+  .about-grid,
+  .inspo-grid {
+    min-width: 0;
+  }
+}
+@media (max-width: 720px) {
+  .poster {
+    max-width: calc(100vw - 48px);
+  }
+}
