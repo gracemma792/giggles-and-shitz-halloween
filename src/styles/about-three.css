@@ -1,2 +1,45 @@
 .polaroids{height:600px}.grace-card{left:0}.manuja-card{top:85px;bottom:auto}.friends-card{width:280px;left:86px;bottom:0;transform:rotate(-2deg);z-index:0}.friends-photo{height:185px;overflow:hidden;background:#18090b}.friends-photo img{width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:saturate(.84) contrast(1.08)}
 @media(max-width:720px){.polaroids{height:555px}.friends-card{width:230px;left:50%;bottom:0;transform:translateX(-50%) rotate(-2deg)}.friends-photo{height:150px}.friends-card figcaption{font-size:14px}}
+
+/* Instagram buttons */
+.instagram-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 24px;
+  align-items: center;
+}
+
+.instagram-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: #10080a;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  border: 2px solid #10080a;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.instagram-button:hover {
+  transform: translateY(-2px);
+  opacity: 0.85;
+  color: #fff !important;
+}
+
+@media (max-width: 600px) {
+  .instagram-links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .instagram-button {
+    width: 100%;
+  }
+}
+
