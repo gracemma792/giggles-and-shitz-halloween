@@ -12,9 +12,9 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Giggles & Shitz Halloween Party — RSVP if you dare." />
+    <meta name="description" content="Halloparty 26 — a GAS production." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <title>Giggles & Shitz — Halloween Party</title>
+    <title>Halloparty 26 — GAS</title>
   </head>
   <body>
     <div class="grain"></div>
@@ -28,6 +28,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <nav aria-label="Main navigation">
         <a href="#details">The plan</a>
         <a href="#costumes">Costumes</a>
+        <a href="./about">About GAS</a>
         <a class="nav-rsvp" href="#rsvp">RSVP</a>
       </nav>
     </header>
@@ -36,8 +37,8 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <section class="hero wrap">
         <div class="hero-copy">
           <p class="eyebrow">GAS presents</p>
-          <h1>Fright<br /><em>Night.</em></h1>
-          <p class="hero-text">A Halloween party for good costumes, pizza, drinks, and the people you actually want to see.</p>
+          <h1>Hallo<em>party<br />26.</em></h1>
+          <p class="hero-text">A GAS production: costumes, pizza, drinks and a proper Saturday night in Wareemba.</p>
           <a class="button button-orange" href="#rsvp">RSVP <span>→</span></a>
         </div>
         <div class="poster">
@@ -54,7 +55,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         <div class="details-grid">
           <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Saturday, 31 October</b><br />Starts at 8:00pm</p></article>
           <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>Wareemba</b><br />Full address sent after RSVP</p></article>
-          <article><span class="detail-icon">✦</span><h2>Dress code</h2><p><b>Costumes compulsory</b><br />Bring up to two friends</p></article>
+          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bring up to two friends</b><br />Add them in your RSVP</p></article>
           <article><span class="detail-icon">◈</span><h2>Drinks</h2><p><b>BYO</b><br />Bring whatever you like to drink</p></article>
         </div>
       </section>
@@ -77,11 +78,13 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         <div class="pizza-title"><p class="eyebrow">Important business</p><h2>Pizza <em>order</em></h2><p>Let us know what you want so we can order properly.</p></div>
         <form class="pizza-form form-card" data-form="pizza">
           <fieldset>
-            <legend>What should we order?</legend>
-            <label><input type="checkbox" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
-            <label><input type="checkbox" name="pizza" value="Margherita" /> <span>🍅</span> Margherita</label>
-            <label><input type="checkbox" name="pizza" value="Veggie" /> <span>🥦</span> Veggie</label>
-            <label><input type="checkbox" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian (brave)</label>
+            <legend>Vote for one pizza</legend>
+            <label><input required type="radio" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
+            <label><input type="radio" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian</label>
+            <label><input type="radio" name="pizza" value="Supreme" /> <span>🫑</span> Supreme</label>
+            <label><input type="radio" name="pizza" value="BBQ Meatlovers" /> <span>🥓</span> BBQ Meatlovers</label>
+            <label><input type="radio" name="pizza" value="BBQ Chicken & Bacon" /> <span>🍗</span> BBQ Chicken & Bacon</label>
+            <label><input type="radio" name="pizza" value="Vegorama" /> <span>🥬</span> Vegorama</label>
           </fieldset>
           <label class="field-label">Any allergies / dietary things?<input name="dietary" placeholder="e.g. gluten-free, no dairy, no anchovies please..." /></label>
           <button class="button button-lime" type="submit">Submit pizza choice <span>↗</span></button>
@@ -94,17 +97,15 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
           <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
           <form class="rsvp-form form-card" data-form="rsvp">
             <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
-            <label class="field-label">Email<input required type="email" name="email" autocomplete="email" placeholder="you@email.com" /></label>
             <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
             <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
-            <label class="field-label">Costume (optional)<input name="costume" placeholder="If you know already" /></label>
             <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
             <p class="form-message" aria-live="polite"></p>
           </form>
         </div>
       </section>
     </main>
-    <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloween in Wareemba · BYO · Costumes compulsory</p></footer>
+    <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
       document.querySelectorAll('form[data-form]').forEach((form) => {
         form.addEventListener('submit', (event) => {

@@ -1,0 +1,2 @@
+.polaroids{height:600px}.grace-card{left:0}.manuja-card{top:85px;bottom:auto}.friends-card{width:280px;left:86px;bottom:0;transform:rotate(-2deg);z-index:0}.friends-photo{height:185px;overflow:hidden;background:#18090b}.friends-photo img{width:100%;height:100%;object-fit:cover;object-position:center 58%;filter:saturate(.84) contrast(1.08)}
+@media(max-width:720px){.polaroids{height:555px}.friends-card{width:230px;left:50%;bottom:0;transform:translateX(-50%) rotate(-2deg)}.friends-photo{height:150px}.friends-card figcaption{font-size:14px}}
