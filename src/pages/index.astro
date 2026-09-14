@@ -85,7 +85,10 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <section id="rsvp" class="rsvp section">
         <div class="wrap rsvp-grid">
           <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
-          <form class="rsvp-form form-card" data-form="rsvp">
+          <form class="rsvp-form form-card" data-form="rsvp" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="🎃 New Halloparty RSVP">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
             <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
             <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
             <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
@@ -99,7 +102,10 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
 
       <section class="pizza-section wrap section is-hidden" id="pizza">
         <div class="pizza-title"><p class="eyebrow">Important business</p><h2>Pizza <em>order</em></h2><p>Let us know what you want so we can order properly.</p></div>
-        <form class="pizza-form form-card" data-form="pizza">
+        <form class="pizza-form form-card" data-form="pizza" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="🍕 New Halloparty Pizza Order">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
           <fieldset>
             <legend>Vote for one pizza</legend>
             <label><input required type="radio" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
@@ -162,25 +168,6 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
             setTimeout(() => {
               pizzaSection?.classList.remove("is-hidden");
             }, 1600);
-          }
-        });
-      });
-      document.querySelectorAll('form[data-form]').forEach((form) => {
-        form.addEventListener('submit', (event) => {
-          event.preventDefault();
-
-          const message = form.querySelector('.form-message');
-          const type = form.dataset.form;
-
-          if (message) {
-            message.textContent =
-              type === 'rsvp'
-                ? 'You’re on the list. See you there.'
-                : 'Pizza choice received.';
-          }
-
-          if (type === 'pizza') {
-            form.reset();
           }
         });
       });
