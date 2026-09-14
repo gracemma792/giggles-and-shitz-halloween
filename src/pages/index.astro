@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import '../styles/overrides.css';
+import '../styles/grace.css';
+import '../styles/about-three.css';
 
 const bats = Array.from({ length: 18 }, (_, index) => ({
   id: index,
@@ -15,6 +17,11 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
     <meta name="description" content="Halloparty 26 — a GAS production." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <title>Halloparty 26 — GAS</title>
+  <style>
+    .pizza-section.is-hidden {
+      display: none;
+    }
+  </style>
   </head>
   <body>
     <div class="grain"></div>
@@ -28,7 +35,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <nav aria-label="Main navigation">
         <a href="#details">The plan</a>
         <a href="#costumes">Costumes</a>
-        <a href="./about">About GAS</a>
+        <a href="#about">About GAS</a>
         <a class="nav-rsvp" href="#rsvp">RSVP</a>
       </nav>
     </header>
@@ -74,7 +81,22 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </div>
       </section>
 
-      <section class="pizza-section wrap section" id="pizza">
+      <section id="rsvp" class="rsvp section">
+        <div class="wrap rsvp-grid">
+          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
+          <form class="rsvp-form form-card" data-form="rsvp">
+            <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
+            <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
+            <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
+            <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
+            <p class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      
+
+      <section class="pizza-section wrap section is-hidden" id="pizza">
         <div class="pizza-title"><p class="eyebrow">Important business</p><h2>Pizza <em>order</em></h2><p>Let us know what you want so we can order properly.</p></div>
         <form class="pizza-form form-card" data-form="pizza">
           <fieldset>
@@ -92,18 +114,99 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </form>
       </section>
 
-      <section id="rsvp" class="rsvp section">
-        <div class="wrap rsvp-grid">
-          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
-          <form class="rsvp-form form-card" data-form="rsvp">
-            <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
-            <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
-            <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
-            <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
-            <p class="form-message" aria-live="polite"></p>
-          </form>
+      
+      <section id="about" class="about wrap section">
+        <p class="eyebrow">The people behind it</p>
+        <h2>About <em>GAS.</em></h2>
+        <div class="about-grid">
+          <div class="polaroids" aria-label="Grace and Manuja">
+            <figure class="polaroid grace-card"><div class="grace-photo"><img src="./grace.png" alt="Grace in costume" /></div><figcaption>Grace <b>←</b></figcaption></figure>
+            <figure class="polaroid manuja-card"><div class="manuja-photo"><img src="./manuja.png" alt="Manuja in costume" /></div><figcaption><b>→</b> Manuja</figcaption></figure>
+            <figure class="polaroid friends-card"><div class="friends-photo"><img src="./gas-friends.jpg" alt="Grace and Manuja together" /></div><figcaption>Grace + Manuja <b>😂💩</b></figcaption></figure>
+          </div>
+          <div class="about-copy">
+            <p>Giggles &amp; Shitz Productions started when Grace and Manuja were bored at UTS and decided to make a podcast. It quickly became an ongoing excuse to make things, dress up and take a good idea much further than necessary.</p>
+            <p>Since then, they have stayed committed to the giggles, the shitz and their loyal fan base.
+This year: <b>Halloparty 26</b>, their biggest production yet.</p>
+            <a class="button button-orange" href="#rsvp">RSVP to Halloparty 26 <span>→</span></a>
+            <div class="instagram-links">
+              <a class="instagram-button" href="https://www.instagram.com/manuja.99/" target="_blank" rel="noopener">
+                📸 Manuja's Instagram
+              </a>
+              <a class="instagram-button" href="https://www.instagram.com/grace.markakis/" target="_blank" rel="noopener">
+                📸 Grace's Instagram
+              </a>
+            </div>
+          </div>
         </div>
       </section>
+    </main>
+    <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
+    <script>
+      const pizzaSection = document.querySelector('#pizza');
+      const attendanceInputs = document.querySelectorAll('input[name="attending"]');
+
+      function updatePizzaVisibility() {
+        const yesSelected = document.querySelector('input[name="attending"][value="Yes"]:checked');
+        pizzaSection?.classList.toggle('is-hidden', !yesSelected);
+      }
+
+      attendanceInputs.forEach((input) => {
+        input.addEventListener('change', updatePizzaVisibility);
+      });
+
+      updatePizzaVisibility();
+
+      document.querySelectorAll('form[data-form]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const message = form.querySelector('.form-message');
+          const type = form.dataset.form;
+
+          if (message) {
+            message.textContent =
+              type === 'rsvp'
+                ? 'You’re on the list. See you there.'
+                : 'Pizza choice received.';
+          }
+
+          if (type === 'pizza') {
+            form.reset();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+      <section id="details" class="event-details wrap section">
+        <p class="eyebrow">Mark your haunted calendar</p>
+        <div class="details-grid">
+          <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Saturday, 31 October</b><br />Starts at 8:00pm</p></article>
+          <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>Wareemba</b><br />Full address sent after RSVP</p></article>
+          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bring up to two friends</b><br />Add them in your RSVP</p></article>
+          <article><span class="detail-icon">◈</span><h2>Drinks</h2><p><b>BYO</b><br />Bring whatever you like to drink</p></article>
+        </div>
+      </section>
+
+      <section id="costumes" class="costumes section">
+        <div class="wrap">
+          <div class="section-heading"><div><p class="eyebrow">Costumes compulsory</p><h2>Costume <em>notes</em></h2></div><p>Keep it polished, strange or specific. The assignment is open.</p></div>
+          <div class="inspo-grid">
+            <article class="inspo ghost"><span>01</span><h3>Dead<br />prom queen</h3><p>Pretty, ruined, perfect.</p></article>
+            <article class="inspo witch"><span>02</span><h3>Inanimate<br />object</h3><p>Commit to the bit.</p></article>
+            <article class="inspo alien"><span>03</span><h3>2025–26<br />controversy</h3><p>Keep it clever.</p></article>
+            <article class="inspo clown"><span>04</span><h3>Vampire<br />after dark</h3><p>Black tailoring, one good detail.</p></article>
+            <article class="inspo fifth"><span>05</span><h3>Last-minute<br />icon</h3><p>Simple can still be sharp.</p></article>
+            <article class="inspo sixth"><span>06</span><h3>Something<br />uncanny</h3><p>Recognisable from across the room.</p></article>
+          </div>
+        </div>
+      </section>
+
+      
+
+      
     </main>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
