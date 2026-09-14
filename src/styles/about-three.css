@@ -43,3 +43,26 @@
   }
 }
 
+
+.home-pumpkin {
+  display: inline-flex !important;
+  align-items: center;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+}
+
+.home-pumpkin img {
+  display: block;
+  width: 72px;
+  height: 58px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.home-pumpkin:hover img {
+  transform: scale(1.08) rotate(-2deg);
+}
+
