@@ -24,6 +24,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   </style>
   </head>
   <body>
+  <div class="rsvp-jumpscare" id="rsvp-jumpscare" aria-hidden="true"><div class="rsvp-jumpscare-inner"><div class="rsvp-jumpscare-face"><img src="/giggles-and-shitz-halloween/momo.jpg" alt="" /></div><div class="rsvp-jumpscare-text">HAHA. YOU’RE COMING.</div></div></div>
     <div class="grain"></div>
     <div class="moon" aria-hidden="true"></div>
     <div class="bat-swarm" aria-hidden="true">
@@ -151,12 +152,19 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
         pizzaSection?.classList.toggle('is-hidden', !yesSelected);
       }
 
+      const jumpscare = document.querySelector("#rsvp-jumpscare");
       attendanceInputs.forEach((input) => {
-        input.addEventListener('change', updatePizzaVisibility);
+        input.addEventListener("change", () => {
+          if (input.value === "Yes" && input.checked && jumpscare) {
+            jumpscare.classList.remove("active");
+            void jumpscare.offsetWidth;
+            jumpscare.classList.add("active");
+            setTimeout(() => {
+              pizzaSection?.classList.remove("is-hidden");
+            }, 1600);
+          }
+        });
       });
-
-      updatePizzaVisibility();
-
       document.querySelectorAll('form[data-form]').forEach((form) => {
         form.addEventListener('submit', (event) => {
           event.preventDefault();
