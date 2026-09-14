@@ -1,0 +1,114 @@
+---
+import '../styles/global.css';
+
+const bats = Array.from({ length: 18 }, (_, index) => ({
+  id: index,
+  style: `--i:${index}; --x:${(index * 17) % 96}; --y:${(index * 31) % 84}; --s:${0.45 + ((index * 13) % 8) / 10}; --d:${7 + (index % 6) * 1.3}s; --delay:-${(index * 1.37).toFixed(1)}s`,
+}));
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Giggles & Shitz Halloween Party — RSVP if you dare." />
+    <title>Giggles & Shitz — Halloween Party</title>
+  </head>
+  <body>
+    <div class="grain"></div>
+    <div class="moon" aria-hidden="true"></div>
+    <div class="bat-swarm" aria-hidden="true">
+      {bats.map((bat) => <span class="bat" style={bat.style}>🦇</span>)}
+    </div>
+
+    <header class="site-header wrap">
+      <a class="brand" href="#top" aria-label="Giggles and Shitz home">G&S</a>
+      <nav aria-label="Main navigation">
+        <a href="#details">The plan</a>
+        <a href="#costumes">Costumes</a>
+        <a class="nav-rsvp" href="#rsvp">RSVP</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero wrap">
+        <div class="hero-copy">
+          <p class="eyebrow">A Giggles & Shitz production presents</p>
+          <h1>Fright<br /><em>Night.</em></h1>
+          <p class="hero-text">A cursed little celebration of costumes, questionable dance moves, pizza, and the things that go <span>tee hee</span> in the night.</p>
+          <a class="button button-orange" href="#rsvp">Save your spooky spot <span>→</span></a>
+        </div>
+        <div class="poster">
+          <div class="poster-stars">✦ &nbsp; ✧ &nbsp; ✦</div>
+          <img src="./logo.jpg" alt="Giggles and Shitz logo" />
+          <p>HALLOWEEN HOUSE PARTY</p>
+          <div class="poster-date"><b>31</b><span>OCT<br />FRI</span></div>
+          <div class="poster-splat">NO<br />BORING<br />COSTUMES</div>
+        </div>
+      </section>
+
+      <section id="details" class="event-details wrap section">
+        <p class="eyebrow">Mark your haunted calendar</p>
+        <div class="details-grid">
+          <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Friday, 31 October</b><br />Doors creak open at 7:00pm</p></article>
+          <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>The haunted house</b><br />Address lands in your RSVP confirmation</p></article>
+          <article><span class="detail-icon">♬</span><h2>Vibe</h2><p><b>Costume compulsory-ish</b><br />Bring your weirdest, silliest self</p></article>
+        </div>
+      </section>
+
+      <section id="costumes" class="costumes section">
+        <div class="wrap">
+          <div class="section-heading"><div><p class="eyebrow">Dress code: possessed</p><h2>Costume <em>inspo</em></h2></div><p>Come monstrous, camp, creepy, or completely ridiculous. Bonus points for a costume that makes people snort-laugh.</p></div>
+          <div class="inspo-grid">
+            <article class="inspo ghost"><span>👻</span><h3>Bed-sheet<br />icon</h3><p>Classic, dramatic, cheap.</p></article>
+            <article class="inspo witch"><span>🧙</span><h3>Witchy<br />business</h3><p>Pointy hats encouraged.</p></article>
+            <article class="inspo alien"><span>👽</span><h3>We come in<br />peace-ish</h3><p>Space freaks welcome.</p></article>
+            <article class="inspo clown"><span>🤡</span><h3>Silly little<br />clown</h3><p>Honk honk. Beware.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="pizza-section wrap section" id="pizza">
+        <div class="pizza-title"><p class="eyebrow">Important business</p><h2>Pizza <em>oracle</em></h2><p>Tell us what to order so nobody is haunted by a sad empty pizza box.</p></div>
+        <form class="pizza-form form-card" data-form="pizza">
+          <fieldset>
+            <legend>What pizza are you summoning?</legend>
+            <label><input type="checkbox" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
+            <label><input type="checkbox" name="pizza" value="Margherita" /> <span>🍅</span> Margherita</label>
+            <label><input type="checkbox" name="pizza" value="Veggie" /> <span>🥦</span> Veggie</label>
+            <label><input type="checkbox" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian (brave)</label>
+          </fieldset>
+          <label class="field-label">Any allergies / dietary things?<input name="dietary" placeholder="e.g. gluten-free, no dairy, no anchovies please..." /></label>
+          <button class="button button-lime" type="submit">Cast my pizza vote <span>↗</span></button>
+          <p class="form-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="rsvp" class="rsvp section">
+        <div class="wrap rsvp-grid">
+          <div><p class="eyebrow">Will you haunt us?</p><h2>RSVP<br /><em>if you dare.</em></h2><p class="rsvp-note">Please let us know by <b>24 October</b> so we can plan the right amount of chaos.</p><div class="pumpkin">🎃</div></div>
+          <form class="rsvp-form form-card" data-form="rsvp">
+            <label class="field-label">Your name<input required name="name" autocomplete="name" placeholder="The name on your tombstone" /></label>
+            <label class="field-label">Email<input required type="email" name="email" autocomplete="email" placeholder="you@spooky.com" /></label>
+            <fieldset class="attendance"><legend>Are you coming?</legend><label><input required type="radio" name="attending" value="Absolutely" /> Absolutely!</label><label><input type="radio" name="attending" value="Sadly, no" /> Tragically, no</label></fieldset>
+            <label class="field-label">Your costume plan (if known)<input name="costume" placeholder="Keeping it mysterious is also valid" /></label>
+            <button class="button button-orange" type="submit">Send my RSVP <span>🦇</span></button>
+            <p class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer><img src="./logo.jpg" alt="Giggles and Shitz" /><p>Made with mischief & mild indigestion.</p></footer>
+    <script>
+      document.querySelectorAll('form[data-form]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const message = form.querySelector('.form-message');
+          const type = form.dataset.form;
+          if (message) message.textContent = type === 'rsvp' ? '🕸️ You’re on the haunted guest list. See you there!' : '🍕 Your pizza prophecy has been received!';
+          form.reset();
+        });
+      });
+    </script>
+  </body>
+</html>
