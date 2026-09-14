@@ -2,4 +2,6 @@ node_modules/
 .npm-cache/
 dist/
 preview/
+.astro/
+work/
 .DS_Store

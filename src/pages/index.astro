@@ -12,6 +12,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Giggles & Shitz Halloween Party — RSVP if you dare." />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <title>Giggles & Shitz — Halloween Party</title>
   </head>
   <body>
@@ -33,37 +34,38 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
     <main id="top">
       <section class="hero wrap">
         <div class="hero-copy">
-          <p class="eyebrow">A Giggles & Shitz production presents</p>
+          <p class="eyebrow">Giggles & Shitz presents</p>
           <h1>Fright<br /><em>Night.</em></h1>
           <p class="hero-text">A cursed little celebration of costumes, questionable dance moves, pizza, and the things that go <span>tee hee</span> in the night.</p>
           <a class="button button-orange" href="#rsvp">Save your spooky spot <span>→</span></a>
         </div>
         <div class="poster">
           <div class="poster-stars">✦ &nbsp; ✧ &nbsp; ✦</div>
-          <img src="./logo.jpg" alt="Giggles and Shitz logo" />
-          <p>HALLOWEEN HOUSE PARTY</p>
+          <img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" />
+          <p>HALLOWEEN · WAREEMBA</p>
           <div class="poster-date"><b>31</b><span>OCT<br />FRI</span></div>
-          <div class="poster-splat">NO<br />BORING<br />COSTUMES</div>
+          <div class="poster-splat">COSTUMES<br />ARE<br />COMPULSORY</div>
         </div>
       </section>
 
       <section id="details" class="event-details wrap section">
         <p class="eyebrow">Mark your haunted calendar</p>
         <div class="details-grid">
-          <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Friday, 31 October</b><br />Doors creak open at 7:00pm</p></article>
-          <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>The haunted house</b><br />Address lands in your RSVP confirmation</p></article>
-          <article><span class="detail-icon">♬</span><h2>Vibe</h2><p><b>Costume compulsory-ish</b><br />Bring your weirdest, silliest self</p></article>
+          <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Friday, 31 October</b><br />Starts at 8:00pm</p></article>
+          <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>Wareemba</b><br />Full address sent after RSVP</p></article>
+          <article><span class="detail-icon">✦</span><h2>Dress code</h2><p><b>Costumes compulsory</b><br />No exceptions, respectfully</p></article>
+          <article><span class="detail-icon">◈</span><h2>Drinks</h2><p><b>BYO</b><br />Bring whatever you like to drink</p></article>
         </div>
       </section>
 
       <section id="costumes" class="costumes section">
         <div class="wrap">
-          <div class="section-heading"><div><p class="eyebrow">Dress code: possessed</p><h2>Costume <em>inspo</em></h2></div><p>Come monstrous, camp, creepy, or completely ridiculous. Bonus points for a costume that makes people snort-laugh.</p></div>
+          <div class="section-heading"><div><p class="eyebrow">Dress code is not optional</p><h2>Costume <em>notes</em></h2></div><p>Keep it polished, strange, a little dangerous. Red, black, lace, leather, blood-red lips — you get it.</p></div>
           <div class="inspo-grid">
-            <article class="inspo ghost"><span>👻</span><h3>Bed-sheet<br />icon</h3><p>Classic, dramatic, cheap.</p></article>
-            <article class="inspo witch"><span>🧙</span><h3>Witchy<br />business</h3><p>Pointy hats encouraged.</p></article>
-            <article class="inspo alien"><span>👽</span><h3>We come in<br />peace-ish</h3><p>Space freaks welcome.</p></article>
-            <article class="inspo clown"><span>🤡</span><h3>Silly little<br />clown</h3><p>Honk honk. Beware.</p></article>
+            <article class="inspo ghost"><span>01</span><h3>Dead<br />prom queen</h3><p>Pretty, ruined, perfect.</p></article>
+            <article class="inspo witch"><span>02</span><h3>Vampire<br />after dark</h3><p>Black tailoring, one good detail.</p></article>
+            <article class="inspo alien"><span>03</span><h3>Little red<br />devil</h3><p>Simple. Effective. A classic.</p></article>
+            <article class="inspo clown"><span>04</span><h3>Something<br />uncanny</h3><p>Recognisable from across the room.</p></article>
           </div>
         </div>
       </section>
@@ -98,7 +100,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </div>
       </section>
     </main>
-    <footer><img src="./logo.jpg" alt="Giggles and Shitz" /><p>Made with mischief & mild indigestion.</p></footer>
+    <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloween in Wareemba · BYO · Costumes compulsory</p></footer>
     <script>
       document.querySelectorAll('form[data-form]').forEach((form) => {
         form.addEventListener('submit', (event) => {
