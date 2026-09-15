@@ -95,7 +95,6 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
             <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
-  <label class="field-label">Email<input required type="email" name="email" autocomplete="email" placeholder="your@email.com" /></label>
             <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
             <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option></select><small>Guest option is subject to numbers.</small></label>
             <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
