@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/overrides.css';
+import '../styles/dj.css';
 import '../styles/grace.css';
 import '../styles/about-three.css';
 
@@ -83,6 +84,14 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </div>
       </section>
 
+      <section id="dj" class="dj-spotlight section" aria-label="DJ spotlight">
+        <div class="light-beam beam-one"></div><div class="light-beam beam-two"></div><div class="light-beam beam-three"></div>
+        <div class="wrap dj-grid">
+          <div class="dj-copy"><p class="eyebrow">On the decks</p><h2>Shawn<br /><em>Alvyss.</em></h2><p>Keeping Halloparty 26 moving all night.</p><a class="vinyl-button" href="https://www.instagram.com/shawnalvyss/" target="_blank" rel="noopener" aria-label="Follow Shawn Alvyss on Instagram"><span>IG</span></a><small>Tap the record to follow</small></div>
+          <figure class="dj-photo"><img src="./shawn-alvyss.png" alt="DJ Shawn Alvyss on the decks" /><figcaption>HALL0PARTY 26 · DJ SET</figcaption></figure>
+        </div>
+      </section>
+
       <section id="rsvp" class="rsvp section">
         <div class="wrap rsvp-grid">
           <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
@@ -152,6 +161,7 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
   const pizzaSection = document.querySelector('#pizza');
+  const djSpotlight = document.querySelector('#dj');
   const attendanceInputs = document.querySelectorAll('input[name="attending"]');
   const jumpscare = document.querySelector('#rsvp-jumpscare');
 
@@ -178,6 +188,12 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
       }
     });
   });
+
+  if (djSpotlight) {
+    new IntersectionObserver(([entry]) => {
+      document.body.classList.toggle('dj-active', entry.isIntersecting && entry.intersectionRatio > 0.55);
+    }, { threshold: [0.55] }).observe(djSpotlight);
+  }
 
   document.querySelectorAll('form').forEach((form) => {
     form.addEventListener('submit', async (event) => {
