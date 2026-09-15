@@ -89,7 +89,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
 
       <section id="rsvp" class="rsvp section">
         <div class="wrap rsvp-grid">
-          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
+          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><p class="rsvp-count" id="rsvp-count">Loading RSVP count…</p><div class="pumpkin">🎃</div></div>
           <form class="rsvp-form form-card" data-form="rsvp" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
   <input type="hidden" name="_subject" value="🎃 New Halloparty RSVP">
   <input type="hidden" name="_captcha" value="false">
@@ -169,6 +169,27 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
   const djSpotlight = document.querySelector('#dj');
   const attendanceInputs = document.querySelectorAll('input[name="attending"]');
   const jumpscare = document.querySelector('#rsvp-jumpscare');
+  const RSVP_COUNTER_KEY = 'giggles-and-shitz-halloparty26-yescount-x7q2';
+  const RSVP_CAP = 50;
+  const rsvpCountEl = document.querySelector('#rsvp-count');
+
+  function renderRsvpCount(value) {
+    if (!rsvpCountEl) return;
+    const safeValue = Math.min(value, RSVP_CAP);
+    rsvpCountEl.innerHTML = `<b>${safeValue}</b> / ${RSVP_CAP} spots RSVP'd${value >= RSVP_CAP ? " — we're full!" : ''}`;
+  }
+
+  async function loadRsvpCount() {
+    try {
+      const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${RSVP_COUNTER_KEY}`);
+      const data = await res.json();
+      renderRsvpCount(data.value ?? 0);
+    } catch (err) {
+      if (rsvpCountEl) rsvpCountEl.textContent = '';
+    }
+  }
+
+  loadRsvpCount();
 
   function updatePizzaVisibility() {
     const yesSelected = document.querySelector(
@@ -227,11 +248,22 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
         }
 
         if (form.dataset.form === 'rsvp') {
+          const attendingValue = new FormData(form).get('attending');
+
           if (message) {
-            const attending = new FormData(form).get('attending');
-            message.innerHTML = attending === 'Yes'
+            message.innerHTML = attendingValue === 'Yes'
               ? 'You’re on the list. <a class="pizza-nudge" href="#pizza">WAIT! 🍕🍕🍕 Choose your pizza vote →</a>'
               : 'Thanks for letting us know.';
+          }
+
+          if (attendingValue === 'Yes') {
+            try {
+              const hitRes = await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${RSVP_COUNTER_KEY}`);
+              const hitData = await hitRes.json();
+              renderRsvpCount(hitData.value ?? 0);
+            } catch (counterErr) {
+              // counter is best-effort — the RSVP itself already went through
+            }
           }
         }
 
