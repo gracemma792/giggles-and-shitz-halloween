@@ -65,7 +65,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         <div class="details-grid">
           <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Saturday, 31 October</b><br />Starts at 8:00pm</p></article>
           <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>8 Coranto Street</b><br />Wareemba</p></article>
-          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bring up to two friends</b><br />Add them in your RSVP</p></article>
+          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bringing someone?</b><br />Check with Grace or Manuja first.</p></article>
           <article><span class="detail-icon">◈</span><h2>Drinks</h2><p><b>BYO</b><br />Bring whatever you like to drink</p></article>
         </div>
       </section>
@@ -84,14 +84,6 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </div>
       </section>
 
-      <section id="dj" class="dj-spotlight section" aria-label="DJ spotlight">
-        <div class="light-beam beam-one"></div><div class="light-beam beam-two"></div><div class="light-beam beam-three"></div>
-        <div class="wrap dj-grid">
-          <div class="dj-copy"><p class="eyebrow">On the decks</p><h2>Shawn<br /><em>Alvyss.</em></h2><p>Keeping Halloparty 26 moving all night.</p><a class="vinyl-button" href="https://www.instagram.com/shawnalvyss/" target="_blank" rel="noopener" aria-label="Follow Shawn Alvyss on Instagram"><span>IG</span></a><small>Tap the record to follow</small></div>
-          <figure class="dj-photo"><img src="./shawn-alvyss.png" alt="DJ Shawn Alvyss on the decks" /><figcaption>HALL0PARTY 26 · DJ SET</figcaption></figure>
-        </div>
-      </section>
-
       <section id="rsvp" class="rsvp section">
         <div class="wrap rsvp-grid">
           <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
@@ -101,7 +93,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   <input type="hidden" name="_template" value="table">
             <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
             <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
-            <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
+            <p class="field-label guest-note"><span>Bringing someone?</span><small>Please check with Grace or Manuja first.</small></p>
             <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
             <p class="form-message" aria-live="polite"></p>
           </form>
@@ -131,7 +123,14 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </form>
       </section>
 
-      
+      <section id="dj" class="dj-spotlight section" aria-label="DJ spotlight">
+        <div class="light-beam beam-one"></div><div class="light-beam beam-two"></div><div class="light-beam beam-three"></div>
+        <div class="wrap dj-grid">
+          <div class="dj-copy"><p class="eyebrow">On the decks</p><h2>Shawn<br /><em>Alvyss.</em></h2><p>Keeping Halloparty 26 moving all night.</p><a class="vinyl-button" href="https://www.instagram.com/shawnalvyss/" target="_blank" rel="noopener" aria-label="Follow Shawn Alvyss on Instagram"><span>IG</span></a><small>Tap the record to follow</small></div>
+          <figure class="dj-photo"><img src="./shawn-alvyss.png" alt="DJ Shawn Alvyss on the decks" /><figcaption>HALL0PARTY 26 · DJ SET</figcaption></figure>
+        </div>
+      </section>
+
       <section id="about" class="about wrap section">
         <p class="eyebrow">The people behind it</p>
         <h2>About <em>GAS.</em></h2>
@@ -159,7 +158,18 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
       </section>
     </main>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
+    <a class="floating-pumpkin" href="#rsvp" aria-label="Jump to RSVP"><i class="pumpkin-cursor-icon" aria-hidden="true"></i><span>RSVP</span></a>
+    <a class="floating-vinyl" href="#dj" aria-label="Jump to Shawn Alvyss DJ spotlight"><span>DJ</span></a>
     <script>
+const djSection = document.querySelector('#dj');
+
+if (djSection) {
+  const djObserver = new IntersectionObserver(([entry]) => {
+    document.body.classList.toggle('dj-active', entry.isIntersecting);
+  }, { threshold: 0.35 });
+  djObserver.observe(djSection);
+}
+
 const pizzaSection = document.querySelector('#pizza');
 const jumpscare = document.querySelector('#rsvp-jumpscare');
 const rsvpForm = document.querySelector('form[data-form="rsvp"]');
