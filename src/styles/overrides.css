@@ -211,3 +211,25 @@ html,body{max-width:100%;overflow-x:hidden}.poster,.form-card,.polaroid{max-widt
   margin-top: 4px;
 }
 
+
+/* Centre RSVP label inside floating pumpkin */
+.floating-pumpkin {
+  display: grid;
+  place-items: center;
+}
+
+.floating-pumpkin span {
+  position: relative;
+  inset: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #e9dcd8;
+  font: 9px var(--mono);
+  line-height: 1;
+  letter-spacing: 0;
+  z-index: 2;
+}
