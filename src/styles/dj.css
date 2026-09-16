@@ -4,3 +4,26 @@
 
 .rsvp-count{font:11px var(--mono);color:var(--muted);margin-top:10px}
 .rsvp-count b{color:var(--red);font-size:13px}
+
+/* Final RSVP pumpkin label positioning */
+.floating-pumpkin {
+  display: grid;
+  place-items: center;
+}
+
+.floating-pumpkin span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  bottom: auto;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #e9dcd8;
+  font: 9px var(--mono);
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  z-index: 3;
+}
