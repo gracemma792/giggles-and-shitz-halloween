@@ -217,16 +217,6 @@ if (localStorage.getItem('halloparty_rsvp_submitted') === 'true') {
   showRsvpSuccess();
 }
 
-document.querySelectorAll('input[name="attending"]').forEach((input) => {
-  input.addEventListener('change', () => {
-    if (input.value === 'Yes' && input.checked && jumpscare) {
-      jumpscare.classList.remove('active');
-      void jumpscare.offsetWidth;
-      jumpscare.classList.add('active');
-    }
-  });
-});
-
 document.querySelectorAll('form').forEach((form) => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
