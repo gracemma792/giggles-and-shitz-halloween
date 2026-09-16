@@ -297,6 +297,40 @@ document.querySelectorAll('form').forEach((form) => {
 <script>
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2FkGNkPD6cXMMhl3km2Aqvp6r9qxPMF8ip0RC4cEkfGC-e_s0jRTtIhudq4hTRhs6/exec';
 
+  const pizzaCheckboxes = document.querySelectorAll('input[name="pizza"]');
+  const otherCheckbox = document.querySelector('#pizza-other-checkbox');
+  const otherField = document.querySelector('#pizza-other-field');
+
+  pizzaCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const selected = document.querySelectorAll('input[name="pizza"]:checked');
+
+      if (selected.length >= 2) {
+        pizzaCheckboxes.forEach((box) => {
+          if (!box.checked) box.disabled = true;
+        });
+      } else {
+        pizzaCheckboxes.forEach((box) => {
+          box.disabled = false;
+        });
+      }
+
+      if (otherCheckbox?.checked) {
+        otherField?.classList.remove('is-hidden');
+      }
+    });
+  });
+
+  otherCheckbox?.addEventListener('change', () => {
+    otherField?.classList.toggle('is-hidden', !otherCheckbox.checked);
+
+    const input = otherField?.querySelector('input');
+
+    if (input) {
+      input.required = otherCheckbox.checked;
+    }
+  });
+
   document.querySelectorAll('form[data-form]').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -304,11 +338,8 @@ document.querySelectorAll('form').forEach((form) => {
       const message = form.querySelector('.form-message');
       const formType = form.dataset.form;
       const formData = new FormData(form);
-
-      // Collect all form values
       const data = {};
 
-      // Pizza has multiple checkboxes with the same name
       if (formType === 'pizza') {
         const pizzas = formData.getAll('pizza');
 
@@ -322,8 +353,16 @@ document.querySelectorAll('form').forEach((form) => {
           return;
         }
 
-        data.pizza1 = pizzas[0] || '';
-        data.pizza2 = pizzas[1] || '';
+        const pizzaChoices = pizzas.map((pizza) => {
+          if (pizza === 'Other') {
+            return formData.get('pizza_other') || 'Other';
+          }
+
+          return pizza;
+        });
+
+        data.pizza1 = pizzaChoices[0] || '';
+        data.pizza2 = pizzaChoices[1] || '';
         data.dietary = formData.get('dietary') || '';
       } else {
         formData.forEach((value, key) => {
@@ -334,24 +373,14 @@ document.querySelectorAll('form').forEach((form) => {
       message.textContent = 'Sending...';
 
       try {
-        // 1. Send to Google Sheets
         const sheetsResponse = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
+          mode: 'no-cors',
           body: JSON.stringify({
             form_data: data
-          }),
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          }
+          })
         });
 
-        const sheetsResult = await sheetsResponse.json();
-
-        if (!sheetsResult.success) {
-          throw new Error(sheetsResult.error || 'Google Sheets submission failed');
-        }
-
-        // 2. Send to FormSubmit for email
         const emailData = new FormData();
 
         if (formType === 'pizza') {
@@ -389,18 +418,31 @@ document.querySelectorAll('form').forEach((form) => {
           throw new Error('Email submission failed');
         }
 
-        // Success
-        message.textContent =
-          formType === 'pizza'
-            ? 'Pizza vote received 🍕'
-            : 'RSVP received 👻';
+        if (formType === 'rsvp') {
+          localStorage.setItem('halloparty_rsvp_submitted', 'true');
+
+          message.textContent = 'RSVP received 👻';
+
+          setTimeout(() => {
+            if (typeof showRsvpSuccess === 'function') {
+              showRsvpSuccess();
+            }
+          }, 1600);
+        } else {
+          message.textContent = 'Pizza vote received 🍕';
+        }
 
         form.reset();
 
+        pizzaCheckboxes.forEach((box) => {
+          box.disabled = false;
+        });
+
+        otherField?.classList.add('is-hidden');
+
       } catch (error) {
         console.error('Form submission error:', error);
-        message.textContent =
-          'Oops! Something went wrong. Please try again.';
+        message.textContent = 'Oops! Something went wrong. Please try again.';
       }
     });
   });
