@@ -104,23 +104,33 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
 
       <section class="pizza-section wrap section is-hidden" id="pizza">
         <div class="pizza-title"><p class="eyebrow">Important business</p><h2>Pizza <em>order</em></h2><p>Let us know what you want so we can order properly.</p></div>
-        <form class="pizza-form form-card" data-form="pizza" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
+       <form class="pizza-form form-card" data-form="pizza" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
   <input type="hidden" name="_subject" value="🍕 New Halloparty Pizza Order">
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
-          <fieldset>
-            <legend>Choose up to two pizzas</legend>
-            <label><input required type="checkbox" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
-            <label><input type="checkbox" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian</label>
-            <label><input type="checkbox" name="pizza" value="Supreme" /> <span>🫑</span> Supreme</label>
-            <label><input type="checkbox" name="pizza" value="BBQ Meatlovers" /> <span>🥓</span> BBQ Meatlovers</label>
-            <label><input type="checkbox" name="pizza" value="BBQ Chicken & Bacon" /> <span>🍗</span> BBQ Chicken & Bacon</label>
-            <label><input type="checkbox" name="pizza" value="Vegorama" /> <span>🥬</span> Vegorama</label>
-          </fieldset>
-          <label class="field-label">Any allergies / dietary things?<input name="dietary" placeholder="e.g. gluten-free, no dairy, no anchovies please..." /></label>
-          <button class="button button-lime" type="submit">Submit pizza choice <span>↗</span></button>
-          <p class="form-message" aria-live="polite"></p>
-        </form>
+
+  <fieldset>
+    <legend>Choose up to two pizzas</legend>
+
+    <label><input type="checkbox" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
+    <label><input type="checkbox" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian</label>
+    <label><input type="checkbox" name="pizza" value="Supreme" /> <span>🫑</span> Supreme</label>
+    <label><input type="checkbox" name="pizza" value="BBQ Meatlovers" /> <span>🥓</span> BBQ Meatlovers</label>
+    <label><input type="checkbox" name="pizza" value="BBQ Chicken & Bacon" /> <span>🍗</span> BBQ Chicken & Bacon</label>
+    <label><input type="checkbox" name="pizza" value="Vegorama" /> <span>🥬</span> Vegorama</label>
+  </fieldset>
+
+  <label class="field-label">
+    Any allergies / dietary things?
+    <input name="dietary" placeholder="e.g. gluten-free, no dairy, no anchovies please..." />
+  </label>
+
+  <button class="button button-lime" type="submit">
+    Submit pizza choice <span>↗</span>
+  </button>
+
+  <p class="form-message" aria-live="polite"></p>
+</form>
       </section>
 
       <section id="dj" class="dj-spotlight section" aria-label="DJ spotlight">
@@ -284,39 +294,9 @@ document.querySelectorAll('form').forEach((form) => {
       }
     }
   });
-});
 <script>
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2FkGNkPD6cXMMhl3km2Aqvp6r9qxPMF8ip0RC4cEkfGC-e_s0jRTtIhudq4hTRhs6/exec';
 
-  const pizzaSection = document.querySelector('#pizza');
-  const attendanceInputs = document.querySelectorAll('input[name="attending"]');
-  const jumpscare = document.querySelector('#rsvp-jumpscare');
-
-  function updatePizzaVisibility() {
-    const yesSelected = document.querySelector(
-      'input[name="attending"][value="Yes"]:checked'
-    );
-
-    pizzaSection?.classList.toggle('is-hidden', !yesSelected);
-  }
-
-  attendanceInputs.forEach((input) => {
-    input.addEventListener('change', () => {
-      updatePizzaVisibility();
-
-      if (input.value === 'Yes' && input.checked && jumpscare) {
-        jumpscare.classList.remove('active');
-        void jumpscare.offsetWidth;
-        jumpscare.classList.add('active');
-
-        setTimeout(() => {
-          pizzaSection?.classList.remove('is-hidden');
-        }, 1600);
-      }
-    });
-  });
-
-  // Send forms to both Google Sheets and FormSubmit
   document.querySelectorAll('form[data-form]').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -325,16 +305,36 @@ document.querySelectorAll('form').forEach((form) => {
       const formType = form.dataset.form;
       const formData = new FormData(form);
 
+      // Collect all form values
       const data = {};
 
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
+      // Pizza has multiple checkboxes with the same name
+      if (formType === 'pizza') {
+        const pizzas = formData.getAll('pizza');
+
+        if (pizzas.length === 0) {
+          message.textContent = 'Please choose at least one pizza 🍕';
+          return;
+        }
+
+        if (pizzas.length > 2) {
+          message.textContent = 'Please choose up to two pizzas 🍕';
+          return;
+        }
+
+        data.pizza1 = pizzas[0] || '';
+        data.pizza2 = pizzas[1] || '';
+        data.dietary = formData.get('dietary') || '';
+      } else {
+        formData.forEach((value, key) => {
+          data[key] = value;
+        });
+      }
 
       message.textContent = 'Sending...';
 
       try {
-        // Send to Google Sheets
+        // 1. Send to Google Sheets
         const sheetsResponse = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify({
@@ -345,48 +345,60 @@ document.querySelectorAll('form').forEach((form) => {
           }
         });
 
-        // Send to FormSubmit for email
-        const formSubmitData = new FormData();
+        const sheetsResult = await sheetsResponse.json();
 
-        Object.entries(data).forEach(([key, value]) => {
-          formSubmitData.append(key, value);
-        });
+        if (!sheetsResult.success) {
+          throw new Error(sheetsResult.error || 'Google Sheets submission failed');
+        }
 
-        formSubmitData.append(
+        // 2. Send to FormSubmit for email
+        const emailData = new FormData();
+
+        if (formType === 'pizza') {
+          emailData.append('Pizza 1', data.pizza1);
+          emailData.append('Pizza 2', data.pizza2);
+          emailData.append('Notes', data.dietary);
+        } else {
+          Object.entries(data).forEach(([key, value]) => {
+            emailData.append(key, value);
+          });
+        }
+
+        emailData.append(
           '_subject',
           formType === 'pizza'
-            ? '🎃 New Pizza Vote'
+            ? '🍕 New Halloparty Pizza Order'
             : '🎃 New Halloween RSVP'
         );
 
-        formSubmitData.append('_captcha', 'false');
-        formSubmitData.append('_template', 'table');
+        emailData.append('_captcha', 'false');
+        emailData.append('_template', 'table');
 
-        await fetch(
+        const emailResponse = await fetch(
           'https://formsubmit.co/gmarka876@gmail.com',
           {
             method: 'POST',
-            body: formSubmitData,
+            body: emailData,
             headers: {
               Accept: 'application/json'
             }
           }
         );
 
-        if (formType === 'pizza') {
-          message.textContent = 'Pizza vote received 🍕';
-        } else {
-          message.textContent = 'RSVP received 👻';
+        if (!emailResponse.ok) {
+          throw new Error('Email submission failed');
         }
+
+        // Success
+        message.textContent =
+          formType === 'pizza'
+            ? 'Pizza vote received 🍕'
+            : 'RSVP received 👻';
 
         form.reset();
 
-        if (formType === 'pizza') {
-          updatePizzaVisibility();
-        }
-
       } catch (error) {
-        console.error(error);
+        console.error('Form submission error:', error);
         message.textContent =
           'Oops! Something went wrong. Please try again.';
       }
