@@ -285,6 +285,113 @@ document.querySelectorAll('form').forEach((form) => {
     }
   });
 });
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2FkGNkPD6cXMMhl3km2Aqvp6r9qxPMF8ip0RC4cEkfGC-e_s0jRTtIhudq4hTRhs6/exec';
+
+  const pizzaSection = document.querySelector('#pizza');
+  const attendanceInputs = document.querySelectorAll('input[name="attending"]');
+  const jumpscare = document.querySelector('#rsvp-jumpscare');
+
+  function updatePizzaVisibility() {
+    const yesSelected = document.querySelector(
+      'input[name="attending"][value="Yes"]:checked'
+    );
+
+    pizzaSection?.classList.toggle('is-hidden', !yesSelected);
+  }
+
+  attendanceInputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      updatePizzaVisibility();
+
+      if (input.value === 'Yes' && input.checked && jumpscare) {
+        jumpscare.classList.remove('active');
+        void jumpscare.offsetWidth;
+        jumpscare.classList.add('active');
+
+        setTimeout(() => {
+          pizzaSection?.classList.remove('is-hidden');
+        }, 1600);
+      }
+    });
+  });
+
+  // Send forms to both Google Sheets and FormSubmit
+  document.querySelectorAll('form[data-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const message = form.querySelector('.form-message');
+      const formType = form.dataset.form;
+      const formData = new FormData(form);
+
+      const data = {};
+
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      message.textContent = 'Sending...';
+
+      try {
+        // Send to Google Sheets
+        const sheetsResponse = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            form_data: data
+          }),
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          }
+        });
+
+        // Send to FormSubmit for email
+        const formSubmitData = new FormData();
+
+        Object.entries(data).forEach(([key, value]) => {
+          formSubmitData.append(key, value);
+        });
+
+        formSubmitData.append(
+          '_subject',
+          formType === 'pizza'
+            ? '🎃 New Pizza Vote'
+            : '🎃 New Halloween RSVP'
+        );
+
+        formSubmitData.append('_captcha', 'false');
+        formSubmitData.append('_template', 'table');
+
+        await fetch(
+          'https://formsubmit.co/gmarka876@gmail.com',
+          {
+            method: 'POST',
+            body: formSubmitData,
+            headers: {
+              Accept: 'application/json'
+            }
+          }
+        );
+
+        if (formType === 'pizza') {
+          message.textContent = 'Pizza vote received 🍕';
+        } else {
+          message.textContent = 'RSVP received 👻';
+        }
+
+        form.reset();
+
+        if (formType === 'pizza') {
+          updatePizzaVisibility();
+        }
+
+      } catch (error) {
+        console.error(error);
+        message.textContent =
+          'Oops! Something went wrong. Please try again.';
+      }
+    });
+  });
 </script>
   </body>
 </html>
