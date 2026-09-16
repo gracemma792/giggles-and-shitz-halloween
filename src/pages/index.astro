@@ -121,7 +121,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
     <label><input type="checkbox" name="pizza" value="Other" id="pizza-other-checkbox" /> ✏️ Other</label>
   </fieldset>
 
-  <div id="pizza-other-field" class="is-hidden">
+  <div id="pizza-other-field" style="display: none;">
     <label class="field-label">
       What pizza?
       <input type="text" name="pizza_other" placeholder="Tell us what you want..." />
@@ -218,7 +218,7 @@ pizzaChoices.forEach((pizza) => {
 });
 
 otherCheckbox?.addEventListener('change', () => {
-  otherField?.classList.toggle('is-hidden', !otherCheckbox.checked);
+  if (otherField) otherField.style.display = otherCheckbox.checked ? 'block' : 'none';
 
   const input = otherField?.querySelector('input');
 
@@ -407,7 +407,7 @@ document.querySelectorAll('form').forEach((form) => {
         choice.disabled = false;
       });
 
-      otherField?.classList.add('is-hidden');
+      if (otherField) otherField.style.display = 'none';
 
     } catch (error) {
       console.error('Form submission error:', error);
