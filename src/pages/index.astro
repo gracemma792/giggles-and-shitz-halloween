@@ -109,13 +109,13 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
           <fieldset>
-            <legend>Vote for one pizza</legend>
-            <label><input required type="radio" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
-            <label><input type="radio" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian</label>
-            <label><input type="radio" name="pizza" value="Supreme" /> <span>🫑</span> Supreme</label>
-            <label><input type="radio" name="pizza" value="BBQ Meatlovers" /> <span>🥓</span> BBQ Meatlovers</label>
-            <label><input type="radio" name="pizza" value="BBQ Chicken & Bacon" /> <span>🍗</span> BBQ Chicken & Bacon</label>
-            <label><input type="radio" name="pizza" value="Vegorama" /> <span>🥬</span> Vegorama</label>
+            <legend>Choose up to two pizzas</legend>
+            <label><input required type="checkbox" name="pizza" value="Pepperoni" /> <span>🍕</span> Pepperoni</label>
+            <label><input type="checkbox" name="pizza" value="Hawaiian" /> <span>🍍</span> Hawaiian</label>
+            <label><input type="checkbox" name="pizza" value="Supreme" /> <span>🫑</span> Supreme</label>
+            <label><input type="checkbox" name="pizza" value="BBQ Meatlovers" /> <span>🥓</span> BBQ Meatlovers</label>
+            <label><input type="checkbox" name="pizza" value="BBQ Chicken & Bacon" /> <span>🍗</span> BBQ Chicken & Bacon</label>
+            <label><input type="checkbox" name="pizza" value="Vegorama" /> <span>🥬</span> Vegorama</label>
           </fieldset>
           <label class="field-label">Any allergies / dietary things?<input name="dietary" placeholder="e.g. gluten-free, no dairy, no anchovies please..." /></label>
           <button class="button button-lime" type="submit">Submit pizza choice <span>↗</span></button>
@@ -171,6 +171,22 @@ if (djSection) {
 }
 
 const pizzaSection = document.querySelector('#pizza');
+
+const pizzaChoices = document.querySelectorAll('input[name="pizza"]');
+pizzaChoices.forEach((pizza) => {
+  pizza.addEventListener('change', () => {
+    const selected = document.querySelectorAll('input[name="pizza"]:checked');
+    if (selected.length >= 2) {
+      pizzaChoices.forEach((choice) => {
+        if (!choice.checked) choice.disabled = true;
+      });
+    } else {
+      pizzaChoices.forEach((choice) => {
+        choice.disabled = false;
+      });
+    }
+  });
+});
 const jumpscare = document.querySelector('#rsvp-jumpscare');
 const rsvpForm = document.querySelector('form[data-form="rsvp"]');
 
