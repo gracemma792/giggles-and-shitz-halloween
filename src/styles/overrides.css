@@ -190,3 +190,24 @@ html,body{max-width:100%;overflow-x:hidden}.poster,.form-card,.polaroid{max-widt
   .wrap, .hero, .details-grid, .pizza-section, .rsvp-grid, .about-grid, .dj-grid { min-width: 0; max-width: 100%; }
   .moon, .poster-splat, .light-beam { pointer-events: none; }
 }
+
+.rsvp-success-message {
+  color: #fff;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  margin: 0 0 28px;
+}
+
+.rsvp-success-message p {
+  margin: 0 0 8px;
+}
+
+.rsvp-success-message p:first-child {
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.rsvp-pizza-button {
+  margin-top: 4px;
+}
+

@@ -166,8 +166,11 @@ function showRsvpSuccess() {
     success = document.createElement('div');
     success.className = 'rsvp-success';
     success.innerHTML = `
-      <p class="form-message already-rsvped"><strong>You’re in! 👻</strong></p>
-      <a class="button button-lime" href="#pizza">You’re in! Now choose your pizza 🍕</a>
+      <div class="rsvp-success-message">
+        <p><strong>You’ve already RSVP’d 👻</strong></p>
+        <p>Want to add more people? Contact Grace or Manuja.</p>
+      </div>
+      <a class="button button-lime rsvp-pizza-button" href="#pizza">You’re in! Now choose your pizza 🍕</a>
     `;
     rsvpForm.parentNode.insertBefore(success, rsvpForm.nextSibling);
   }
