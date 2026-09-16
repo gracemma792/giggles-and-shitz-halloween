@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import '../styles/overrides.css';
-import '../styles/dj.css';
 import '../styles/grace.css';
 import '../styles/about-three.css';
 
@@ -38,7 +37,6 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <nav aria-label="Main navigation">
         <a href="#details">The plan</a>
         <a href="#costumes">Costumes</a>
-        <a href="#dj">DJ</a>
         <a href="#about">About GAS</a>
         <a class="nav-rsvp" href="#rsvp">RSVP</a>
       </nav>
@@ -54,10 +52,9 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </div>
         <div class="poster">
           <div class="poster-stars">✦ &nbsp; ✧ &nbsp; ✦</div>
-		  <p>A production by...</p>
           <img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" />
           <p>HALLOWEEN · WAREEMBA</p>
-          <div class="poster-date"><b>31</b><span>OCT<br />SAT</span></div>
+          <div class="poster-date"><b>31</b><span>OCT<br />FRI</span></div>
           <div class="poster-splat">COSTUMES<br />ARE<br />COMPULSORY</div>
         </div>
       </section>
@@ -67,9 +64,8 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         <div class="details-grid">
           <article><span class="detail-icon">◒</span><h2>When</h2><p><b>Saturday, 31 October</b><br />Starts at 8:00pm</p></article>
           <article><span class="detail-icon">⌂</span><h2>Where</h2><p><b>8 Coranto Street</b><br />Wareemba</p></article>
-          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bring a friend</b><br />(Subject to availability...)</p></article>
+          <article><span class="detail-icon">✦</span><h2>Guests</h2><p><b>Bring up to two friends</b><br />Add them in your RSVP</p></article>
           <article><span class="detail-icon">◈</span><h2>Drinks</h2><p><b>BYO</b><br />Bring whatever you like to drink</p></article>
-		  <article><span class="detail-icon">◈</span><h2>Music</h2><p><b>By Shawn Alvyss</b><br />🎧</p></article>
         </div>
       </section>
 
@@ -89,14 +85,14 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
 
       <section id="rsvp" class="rsvp section">
         <div class="wrap rsvp-grid">
-          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><p class="rsvp-count" id="rsvp-count">Loading RSVP count…</p><div class="pumpkin">🎃</div></div>
+          <div><p class="eyebrow">Saturday 31 October</p><h2>RSVP<br /><em>here.</em></h2><p class="rsvp-note">Please reply by <b>24 October</b>.</p><div class="pumpkin">🎃</div></div>
           <form class="rsvp-form form-card" data-form="rsvp" action="https://formsubmit.co/gmarka876@gmail.com" method="POST">
   <input type="hidden" name="_subject" value="🎃 New Halloparty RSVP">
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
             <label class="field-label">Name<input required name="name" autocomplete="name" placeholder="Your name" /></label>
             <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
-            <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option></select><small>Guest option is subject to numbers.</small></label>
+            <label class="field-label">Friends coming with you?<select name="guests"><option value="0">Just me</option><option value="1">+1 friend</option><option value="2">+2 friends</option></select></label>
             <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
             <p class="form-message" aria-live="polite"></p>
           </form>
@@ -126,14 +122,6 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
         </form>
       </section>
 
-      <section id="dj" class="dj-spotlight section" aria-label="DJ spotlight">
-        <div class="light-beam beam-one"></div><div class="light-beam beam-two"></div><div class="light-beam beam-three"></div>
-        <div class="wrap dj-grid">
-          <div class="dj-copy"><p class="eyebrow">On the decks</p><h2>Shawn<br /><em>Alvyss.</em></h2><p>Keeping Halloparty 26 moving all night.</p><a class="vinyl-button" href="https://www.instagram.com/shawnalvyss/" target="_blank" rel="noopener" aria-label="Follow Shawn Alvyss on Instagram"><span>IG</span></a><small>Tap the record to follow</small></div>
-          <figure class="dj-photo"><img src="./shawn-alvyss.png" alt="DJ Shawn Alvyss on the decks" /></figure>
-        </div>
-      </section>
-
       
       <section id="about" class="about wrap section">
         <p class="eyebrow">The people behind it</p>
@@ -161,35 +149,11 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
         </div>
       </section>
     </main>
-    <a class="floating-pumpkin" href="#rsvp" aria-label="Jump to RSVP"><span>RSVP</span></a>
-    <a class="floating-vinyl" href="#dj" aria-label="Jump to Shawn Alvyss DJ spotlight"><span>DJ</span></a>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
   const pizzaSection = document.querySelector('#pizza');
-  const djSpotlight = document.querySelector('#dj');
   const attendanceInputs = document.querySelectorAll('input[name="attending"]');
   const jumpscare = document.querySelector('#rsvp-jumpscare');
-  const RSVP_COUNTER_KEY = 'giggles-and-shitz-halloparty26-yescount-x7q2';
-  const RSVP_CAP = 50;
-  const rsvpCountEl = document.querySelector('#rsvp-count');
-
-  function renderRsvpCount(value) {
-    if (!rsvpCountEl) return;
-    const safeValue = Math.min(value, RSVP_CAP);
-    rsvpCountEl.innerHTML = `<b>${safeValue}</b> / ${RSVP_CAP} spots RSVP'd${value >= RSVP_CAP ? " — we're full!" : ''}`;
-  }
-
-  async function loadRsvpCount() {
-    try {
-      const res = await fetch(`https://countapi.mileshilliard.com/api/v1/get/${RSVP_COUNTER_KEY}`);
-      const data = await res.json();
-      renderRsvpCount(data.value ?? 0);
-    } catch (err) {
-      if (rsvpCountEl) rsvpCountEl.textContent = '';
-    }
-  }
-
-  loadRsvpCount();
 
   function updatePizzaVisibility() {
     const yesSelected = document.querySelector(
@@ -215,15 +179,18 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
     });
   });
 
-  if (djSpotlight) {
-    new IntersectionObserver(([entry]) => {
-      document.body.classList.toggle('dj-active', entry.isIntersecting && entry.intersectionRatio > 0.55);
-    }, { threshold: [0.55] }).observe(djSpotlight);
-  }
-
   document.querySelectorAll('form').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+
+      if (form.dataset.form === 'rsvp' && localStorage.getItem('halloparty_rsvp_submitted') === 'true') {
+        const message = form.querySelector('.form-message');
+        if (message) {
+          message.innerHTML = '<strong>You’ve already RSVP’d 👻</strong><br>Want to add more people? Contact Grace or Manuja.';
+        }
+        form.style.display = 'none';
+        return;
+      }
 
       const button = form.querySelector('button[type="submit"]');
       const message = form.querySelector('.form-message');
@@ -248,23 +215,14 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
         }
 
         if (form.dataset.form === 'rsvp') {
-          const attendingValue = new FormData(form).get('attending');
+          localStorage.setItem('halloparty_rsvp_submitted', 'true');
 
-          if (message) {
-            message.innerHTML = attendingValue === 'Yes'
-              ? 'You’re on the list. <a class="pizza-nudge" href="#pizza">WAIT! 🍕🍕🍕 Choose your pizza vote →</a>'
-              : 'Thanks for letting us know.';
-          }
+          form.style.display = 'none';
 
-          if (attendingValue === 'Yes') {
-            try {
-              const hitRes = await fetch(`https://countapi.mileshilliard.com/api/v1/hit/${RSVP_COUNTER_KEY}`);
-              const hitData = await hitRes.json();
-              renderRsvpCount(hitData.value ?? 0);
-            } catch (counterErr) {
-              // counter is best-effort — the RSVP itself already went through
-            }
-          }
+          const alreadyMessage = document.createElement('p');
+          alreadyMessage.className = 'form-message already-rsvped';
+          alreadyMessage.innerHTML = '<strong>You’ve already RSVP’d 👻</strong><br>Want to add more people? Contact Grace or Manuja.';
+          form.parentNode.insertBefore(alreadyMessage, form.nextSibling);
         }
 
         if (form.dataset.form === 'pizza') {
