@@ -151,114 +151,102 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
     </main>
     <footer><img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" /><p>Halloparty 26 · Wareemba · BYO</p></footer>
     <script>
-  const pizzaSection = document.querySelector('#pizza');
-  const attendanceInputs = document.querySelectorAll('input[name="attending"]');
-  const jumpscare = document.querySelector('#rsvp-jumpscare');
+const pizzaSection = document.querySelector('#pizza');
+const jumpscare = document.querySelector('#rsvp-jumpscare');
+const rsvpForm = document.querySelector('form[data-form="rsvp"]');
 
-  function updatePizzaVisibility() {
-    const yesSelected = document.querySelector(
-      'input[name="attending"][value="Yes"]:checked'
-    );
+function showRsvpSuccess() {
+  if (!rsvpForm) return;
 
-    pizzaSection?.classList.toggle('is-hidden', !yesSelected);
+  rsvpForm.style.display = 'none';
+
+  let success = document.querySelector('.rsvp-success');
+
+  if (!success) {
+    success = document.createElement('div');
+    success.className = 'rsvp-success';
+    success.innerHTML = `
+      <p class="form-message already-rsvped"><strong>You’re in! 👻</strong></p>
+      <a class="button button-lime" href="#pizza">You’re in! Now choose your pizza 🍕</a>
+    `;
+    rsvpForm.parentNode.insertBefore(success, rsvpForm.nextSibling);
   }
 
-  attendanceInputs.forEach((input) => {
-    input.addEventListener('change', () => {
-      updatePizzaVisibility();
+  pizzaSection?.classList.remove('is-hidden');
+}
 
-      if (input.value === 'Yes' && input.checked && jumpscare) {
-        jumpscare.classList.remove('active');
-        void jumpscare.offsetWidth;
-        jumpscare.classList.add('active');
+if (localStorage.getItem('halloparty_rsvp_submitted') === 'true') {
+  showRsvpSuccess();
+}
 
-        setTimeout(() => {
-          pizzaSection?.classList.remove('is-hidden');
-        }, 1600);
-      }
-    });
+document.querySelectorAll('input[name="attending"]').forEach((input) => {
+  input.addEventListener('change', () => {
+    if (input.value === 'Yes' && input.checked && jumpscare) {
+      jumpscare.classList.remove('active');
+      void jumpscare.offsetWidth;
+      jumpscare.classList.add('active');
+    }
   });
+});
 
-  document.querySelectorAll('form').forEach((form) => {
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
+document.querySelectorAll('form').forEach((form) => {
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-      if (form.dataset.form === 'rsvp' && localStorage.getItem('halloparty_rsvp_submitted') === 'true') {
-        const message = form.querySelector('.form-message');
-        if (message) {
-          message.innerHTML = '<strong>You’ve already RSVP’d 👻</strong><br>Want to add more people? Contact Grace or Manuja.';
+    if (
+      form.dataset.form === 'rsvp' &&
+      localStorage.getItem('halloparty_rsvp_submitted') === 'true'
+    ) {
+      showRsvpSuccess();
+      return;
+    }
+
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector('.form-message');
+    const originalText = button?.innerHTML;
+
+    if (button) {
+      button.disabled = true;
+      button.innerHTML = 'Sending...';
+    }
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+
+      if (!response.ok) throw new Error('Form submission failed');
+
+      if (form.dataset.form === 'rsvp') {
+        localStorage.setItem('halloparty_rsvp_submitted', 'true');
+
+        if (jumpscare) {
+          jumpscare.classList.remove('active');
+          void jumpscare.offsetWidth;
+          jumpscare.classList.add('active');
         }
-        form.style.display = 'none';
-        return;
+
+        setTimeout(showRsvpSuccess, 1600);
       }
 
-      const button = form.querySelector('button[type="submit"]');
-      const message = form.querySelector('.form-message');
-      const originalText = button?.innerHTML;
+      if (form.dataset.form === 'pizza') {
+        if (message) message.textContent = 'Pizza order received 🍕';
+        if (button) button.innerHTML = 'Sent ✓';
+      }
+    } catch (error) {
+      if (message) {
+        message.textContent = 'Oops, something went wrong. Please try again.';
+      }
 
       if (button) {
-        button.disabled = true;
-        button.innerHTML = 'Sending...';
+        button.disabled = false;
+        button.innerHTML = originalText;
       }
-
-      try {
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: {
-            Accept: 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Form submission failed');
-        }
-
-        if (form.dataset.form === 'rsvp') {
-          localStorage.setItem('halloparty_rsvp_submitted', 'true');
-
-          form.style.display = 'none';
-
-          const alreadyMessage = document.createElement('p');
-          alreadyMessage.className = 'form-message already-rsvped';
-          alreadyMessage.innerHTML = '<strong>You’re in! 👻</strong>';
-          form.parentNode.insertBefore(alreadyMessage, form.nextSibling);
-
-          const pizzaButton = document.createElement('a');
-          pizzaButton.className = 'button button-lime';
-          pizzaButton.href = '#pizza';
-          pizzaButton.textContent = 'You’re in! Now choose your pizza 🍕';
-          pizzaButton.style.display = 'inline-flex';
-          pizzaButton.style.marginTop = '18px';
-          form.parentNode.insertBefore(pizzaButton, form.nextSibling);
-
-          setTimeout(() => {
-            pizzaSection?.classList.remove('is-hidden');
-            pizzaButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 500);
-        }
-
-        if (form.dataset.form === 'pizza') {
-          if (message) {
-            message.textContent = 'Pizza order received 🍕';
-          }
-        }
-
-        if (button) {
-          button.innerHTML = 'Sent ✓';
-        }
-      } catch (error) {
-        if (message) {
-          message.textContent = 'Oops, something went wrong. Please try again.';
-        }
-
-        if (button) {
-          button.disabled = false;
-          button.innerHTML = originalText;
-        }
-      }
-    });
+    }
   });
+});
 </script>
   </body>
 </html>
