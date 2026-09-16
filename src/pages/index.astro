@@ -189,6 +189,8 @@ pizzaChoices.forEach((pizza) => {
 });
 const jumpscare = document.querySelector('#rsvp-jumpscare');
 const rsvpForm = document.querySelector('form[data-form="rsvp"]');
+const googleSheetsWebhook = 'https://script.google.com/macros/s/AKfycby1qw317DMYezd05G8SbX6mmARAGGvS-BiwuVsPRVV0fiDgB-djdVU3qXp7qUY6Geyo/exec';
+
 
 function showRsvpSuccess() {
   if (!rsvpForm) return;
@@ -248,6 +250,14 @@ document.querySelectorAll('form').forEach((form) => {
       if (!response.ok) throw new Error('Form submission failed');
 
       if (form.dataset.form === 'rsvp') {
+        fetch(googleSheetsWebhook, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: JSON.stringify({
+            form_data: Object.fromEntries(new FormData(form))
+          })
+        }).catch(() => {});
+
         localStorage.setItem('halloparty_rsvp_submitted', 'true');
 
         if (jumpscare) {
