@@ -221,8 +221,21 @@ This year: <b>Halloparty 26</b>, their biggest production yet.</p>
 
           const alreadyMessage = document.createElement('p');
           alreadyMessage.className = 'form-message already-rsvped';
-          alreadyMessage.innerHTML = '<strong>You’ve already RSVP’d 👻</strong><br>Want to add more people? Contact Grace or Manuja.';
+          alreadyMessage.innerHTML = '<strong>You’re in! 👻</strong>';
           form.parentNode.insertBefore(alreadyMessage, form.nextSibling);
+
+          const pizzaButton = document.createElement('a');
+          pizzaButton.className = 'button button-lime';
+          pizzaButton.href = '#pizza';
+          pizzaButton.textContent = 'You’re in! Now choose your pizza 🍕';
+          pizzaButton.style.display = 'inline-flex';
+          pizzaButton.style.marginTop = '18px';
+          form.parentNode.insertBefore(pizzaButton, form.nextSibling);
+
+          setTimeout(() => {
+            pizzaSection?.classList.remove('is-hidden');
+            pizzaButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 500);
         }
 
         if (form.dataset.form === 'pizza') {
