@@ -196,7 +196,7 @@ const otherField = document.querySelector('#pizza-other-field');
 const jumpscare = document.querySelector('#rsvp-jumpscare');
 const rsvpForm = document.querySelector('form[data-form="rsvp"]');
 
-const googleSheetsWebhook = 'https://script.google.com/macros/s/AKfycbx2FkGNkPD6cXMMhl3km2Aqvp6r9qxPMF8ip0RC4cEkfGC-e_s0jRTtIhudq4hTRhs6/exec';
+const googleSheetsWebhook = 'https://script.google.com/macros/s/AKfycby1qw317DMYezd05G8SbX6mmARAGGvS-BiwuVsPRVV0fiDgB-djdVU3qXp7qUY6Geyo/exec';
 
 pizzaChoices.forEach((pizza) => {
   pizza.addEventListener('change', () => {
@@ -319,22 +319,24 @@ document.querySelectorAll('form').forEach((form) => {
           form_data: data
         });
 
-        fetch(googleSheetsWebhook, {
+        await fetch(googleSheetsWebhook, {
           method: 'POST',
           mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
           body: sheetsPayload
-        }).catch((error) => {
-          console.error('Google Sheets submission error:', error);
         });
       } else {
-        fetch(googleSheetsWebhook, {
+        await fetch(googleSheetsWebhook, {
           method: 'POST',
           mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
           body: JSON.stringify({
             form_data: data
           })
-        }).catch((error) => {
-          console.error('Google Sheets submission error:', error);
         });
       }
 
