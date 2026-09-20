@@ -142,9 +142,9 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <input type="text" name="pizza_other" placeholder="Tell us what you want..." />
     </label>
   </div>
-<div class="pizza-crust-field">
-  <label class="field-label">
-    Pizza 1 crust <span>(optional)</span>
+<div class="pizza-crust-field" id="pizza-crust-fields" style="display: none;">
+  <label class="field-label" id="crust1-label">
+    <span>Choose a base</span>
     <select name="crust1">
       <option value="">Choose a crust...</option>
       <option value="Classic">Classic</option>
@@ -153,8 +153,8 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
     </select>
   </label>
 
-  <label class="field-label">
-    Pizza 2 crust <span>(optional)</span>
+  <label class="field-label" id="crust2-label" style="display: none;">
+    <span>Choose a base</span>
     <select name="crust2">
       <option value="">Choose a crust...</option>
       <option value="Classic">Classic</option>
@@ -234,17 +234,50 @@ const rsvpForm = document.querySelector('form[data-form="rsvp"]');
 
 const googleSheetsWebhook = 'https://script.google.com/macros/s/AKfycby1qw317DMYezd05G8SbX6mmARAGGvS-BiwuVsPRVV0fiDgB-djdVU3qXp7qUY6Geyo/exec';
 
-pizzaChoices.forEach((pizza) => {
-  pizza.addEventListener('change', () => {
-    const selected = document.querySelectorAll('input[name="pizza"]:checked');
+const crustFields = document.querySelector('#pizza-crust-fields');
+const crust1Label = document.querySelector('#crust1-label');
+const crust2Label = document.querySelector('#crust2-label');
+const crust1Select = document.querySelector('select[name="crust1"]');
+const crust2Select = document.querySelector('select[name="crust2"]');
 
-    pizzaChoices.forEach((choice) => {
-      if (!choice.checked) {
-        choice.disabled = selected.length >= 2;
-      }
-    });
+function updateCrustFields() {
+  const selected = Array.from(
+    document.querySelectorAll('input[name="pizza"]:checked')
+  );
+
+  if (crustFields) {
+    crustFields.style.display = selected.length ? 'block' : 'none';
+  }
+
+  if (selected[0] && crust1Label) {
+    crust1Label.style.display = 'block';
+    crust1Label.querySelector('span').textContent =
+      `Choose a base for ${selected[0].value}`;
+  } else if (crust1Label) {
+    crust1Label.style.display = 'none';
+  }
+
+  if (selected[1] && crust2Label) {
+    crust2Label.style.display = 'block';
+    crust2Label.querySelector('span').textContent =
+      `Choose a base for ${selected[1].value}`;
+  } else if (crust2Label) {
+    crust2Label.style.display = 'none';
+    if (crust2Select) crust2Select.value = '';
+  }
+
+  pizzaChoices.forEach((choice) => {
+    if (!choice.checked) {
+      choice.disabled = selected.length >= 2;
+    }
   });
+}
+
+pizzaChoices.forEach((pizza) => {
+  pizza.addEventListener('change', updateCrustFields);
 });
+
+updateCrustFields();
 
 otherCheckbox?.addEventListener('change', () => {
   if (otherField) otherField.style.display = otherCheckbox.checked ? 'block' : 'none';
