@@ -382,70 +382,55 @@ document.querySelectorAll('form').forEach((form) => {
       button.innerHTML = 'Sending...';
     }
 
-    try {
-      const data = {};
+ try {
+  const data = {};
 
-      if (formType === 'pizza') {
-        const pizzas = formData.getAll('pizza');
+  if (formType === 'pizza') {
+    const pizzas = formData.getAll('pizza');
 
-        const pizzaChoicesForSheet = pizzas.map((pizza) => {
-          if (pizza === 'Other') {
-            return formData.get('pizza_other')?.trim() || 'Other';
-          }
-
-          return pizza;
-        });
-
-data.pizza1 = pizzaChoicesForSheet[0] || '';
-data.crust1 = formData.get('crust1') || '';
-data.pizza2 = pizzaChoicesForSheet[1] || '';
-data.crust2 = formData.get('crust2') || '';
-data.dietary = formData.get('dietary') || '';
-      } else {
-        formData.forEach((value, key) => {
-          data[key] = value;
-        });
+    const pizzaChoicesForSheet = pizzas.map((pizza) => {
+      if (pizza === 'Other') {
+        return formData.get('pizza_other')?.trim() || 'Other';
       }
 
-      if (formType === 'pizza') {
-        const sheetsPayload = JSON.stringify({
-          form_data: data
-        });
+      return pizza;
+    });
 
-        await fetch(googleSheetsWebhook, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: sheetsPayload
-        });
-      } else {
-        await fetch(googleSheetsWebhook, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({
-            form_data: data
-          })
-        });
-      }
+    data.pizza1 = pizzaChoicesForSheet[0] || '';
+    data.crust1 = formData.get('crust1') || '';
+    data.pizza2 = pizzaChoicesForSheet[1] || '';
+    data.crust2 = formData.get('crust2') || '';
+    data.dietary = formData.get('dietary') || '';
+  } else {
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+  }
 
-      const emailData = new FormData();
+  await fetch(googleSheetsWebhook, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify({
+      form_data: data
+    })
+  });
 
-      if (formType === 'pizza') {
-  emailData.append('Pizza 1', data.pizza1);
-  emailData.append('Crust 1', data.crust1);
-  emailData.append('Pizza 2', data.pizza2);
-  emailData.append('Crust 2', data.crust2);
-  emailData.append('Notes', data.dietary);
-} else {
-        Object.entries(data).forEach(([key, value]) => {
-          emailData.append(key, value);
-        });
-      }
+  const emailData = new FormData();
+
+  if (formType === 'pizza') {
+    emailData.append('Pizza 1', data.pizza1);
+    emailData.append('Crust 1', data.crust1);
+    emailData.append('Pizza 2', data.pizza2);
+    emailData.append('Crust 2', data.crust2);
+    emailData.append('Notes', data.dietary);
+  } else {
+    Object.entries(data).forEach(([key, value]) => {
+      emailData.append(key, value);
+    });
+  }
 
       emailData.append(
         '_subject',
