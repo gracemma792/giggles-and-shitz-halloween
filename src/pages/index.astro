@@ -68,7 +68,7 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
           <div class="poster-stars">✦ &nbsp; ✧ &nbsp; ✦</div>
           <img src="./giggles-shitz-wordmark.svg" alt="Giggles and Shitz" />
           <p>HALLOWEEN · WAREEMBA</p>
-          <div class="poster-date"><b>31</b><span>OCT<br />SAT</span></div>
+          <div class="poster-date"><b>31</b><span>OCT<br />FRI</span></div>
           <div class="poster-splat">COSTUMES<br />ARE<br />COMPULSORY</div>
         </div>
       </section>
@@ -381,10 +381,12 @@ data.dietary = formData.get('dietary') || '';
       const emailData = new FormData();
 
       if (formType === 'pizza') {
-        emailData.append('Pizza 1', data.pizza1);
-        emailData.append('Pizza 2', data.pizza2);
-        emailData.append('Notes', data.dietary);
-      } else {
+  emailData.append('Pizza 1', data.pizza1);
+  emailData.append('Crust 1', data.crust1);
+  emailData.append('Pizza 2', data.pizza2);
+  emailData.append('Crust 2', data.crust2);
+  emailData.append('Notes', data.dietary);
+} else {
         Object.entries(data).forEach(([key, value]) => {
           emailData.append(key, value);
         });
