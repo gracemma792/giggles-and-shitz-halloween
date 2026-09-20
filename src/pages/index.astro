@@ -38,9 +38,13 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   }
 
   .field-note {
-    margin: 4px 0 0;
+    margin: 4px 0 8px;
     font-size: 0.75rem;
     opacity: 0.55;
+  }
+
+  .field-note + .field-label {
+    margin-top: 16px;
   }
 </style>
   </head>
