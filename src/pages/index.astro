@@ -142,6 +142,27 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
       <input type="text" name="pizza_other" placeholder="Tell us what you want..." />
     </label>
   </div>
+<div class="pizza-crust-field">
+  <label class="field-label">
+    Pizza 1 crust <span>(optional)</span>
+    <select name="crust1">
+      <option value="">Choose a crust...</option>
+      <option value="Classic">Classic</option>
+      <option value="Thin 'n' Crispy">Thin 'n' Crispy</option>
+      <option value="Gluten Free">Gluten Free</option>
+    </select>
+  </label>
+
+  <label class="field-label">
+    Pizza 2 crust <span>(optional)</span>
+    <select name="crust2">
+      <option value="">Choose a crust...</option>
+      <option value="Classic">Classic</option>
+      <option value="Thin 'n' Crispy">Thin 'n' Crispy</option>
+      <option value="Gluten Free">Gluten Free</option>
+    </select>
+  </label>
+</div>
 
   <label class="field-label">
     Any allergies / dietary things?
@@ -320,9 +341,11 @@ document.querySelectorAll('form').forEach((form) => {
           return pizza;
         });
 
-        data.pizza1 = pizzaChoicesForSheet[0] || '';
-        data.pizza2 = pizzaChoicesForSheet[1] || '';
-        data.dietary = formData.get('dietary') || '';
+data.pizza1 = pizzaChoicesForSheet[0] || '';
+data.crust1 = formData.get('crust1') || '';
+data.pizza2 = pizzaChoicesForSheet[1] || '';
+data.crust2 = formData.get('crust2') || '';
+data.dietary = formData.get('dietary') || '';
       } else {
         formData.forEach((value, key) => {
           data[key] = value;
