@@ -46,7 +46,40 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
   .field-note + .field-label {
     margin-top: 16px;
   }
-</style>
+
+form[data-form="rsvp"].manu-locked {
+  background: #e2e2e2 !important;
+  border: 2px solid #b8b8b8 !important;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+form[data-form="rsvp"].manu-locked #manu-lockout {
+  color: #333;
+  font-weight: bold;
+  opacity: 1;
+}
+
+
+form[data-form="rsvp"] { position: relative; }
+
+form[data-form="rsvp"] #manu-lockout:not([hidden]) {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: inherit;
+  background: rgba(215, 215, 215, 0.96);
+  color: #222;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+\n</style>
   </head>
   <body>
   <div class="rsvp-jumpscare" id="rsvp-jumpscare" aria-hidden="true"><div class="rsvp-jumpscare-inner"><div class="rsvp-jumpscare-face"><img src="/giggles-and-shitz-halloween/momo.jpg" alt="" /></div><div class="rsvp-jumpscare-text">HAHA. YOU’RE COMING.</div></div></div>
@@ -127,7 +160,9 @@ const bats = Array.from({ length: 18 }, (_, index) => ({
 <p class="field-note">
   We may use this to share any updates 🎃
 </p>
-            <fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
+            <label class="field-label friend-selector"><span>Who is your friend?</span><select required name="friend" id="friend-select"><option value="">Choose one...</option><option value="Grace">Grace</option><option value="Manu">Manu</option><option value="Both">Both</option></select></label>
+<div id="manu-lockout" role="alert" hidden>Sorry, Manu's guest list is officially FULL 😛</div>
+<fieldset class="attendance"><legend>Can you make it?</legend><label><input required type="radio" name="attending" value="Yes" /> Yes</label><label><input type="radio" name="attending" value="No" /> No</label></fieldset>
             <p class="field-label guest-note"><span>Bringing someone?</span><small>Please check with Grace or Manuja first.</small></p>
             <button class="button button-orange" type="submit">Send RSVP <span>→</span></button>
             <p class="form-message" aria-live="polite"></p>
@@ -253,6 +288,33 @@ const otherCheckbox = document.querySelector('#pizza-other-checkbox');
 const otherField = document.querySelector('#pizza-other-field');
 const jumpscare = document.querySelector('#rsvp-jumpscare');
 const rsvpForm = document.querySelector('form[data-form="rsvp"]');
+
+const friendSelect = document.querySelector('#friend-select');
+const manuLockout = document.querySelector('#manu-lockout');
+
+function updateFriendLockout() {
+  if (!friendSelect || !rsvpForm || !manuLockout) return;
+
+  const locked =
+    localStorage.getItem('halloparty_manu_locked') === 'yes' ||
+    friendSelect.value === 'Manu';
+
+  if (locked) {
+    localStorage.setItem('halloparty_manu_locked', 'yes');
+    friendSelect.value = 'Manu';
+  }
+
+  rsvpForm.classList.toggle('manu-locked', locked);
+  manuLockout.hidden = !locked;
+
+  rsvpForm.querySelectorAll('input, select, button, textarea').forEach((field) => {
+    field.disabled = locked;
+  });
+}
+
+friendSelect?.addEventListener('change', updateFriendLockout);
+updateFriendLockout();
+
 
 const googleSheetsWebhook = 'https://script.google.com/macros/s/AKfycby1qw317DMYezd05G8SbX6mmARAGGvS-BiwuVsPRVV0fiDgB-djdVU3qXp7qUY6Geyo/exec';
 
