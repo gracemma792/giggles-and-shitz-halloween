@@ -561,5 +561,148 @@ document.querySelectorAll('form').forEach((form) => {
   });
 });
 </script>
+
+  <div id="halloparty-popup" class="party-popup" aria-hidden="true">
+    <div class="party-popup-card" role="dialog" aria-modal="true" aria-labelledby="party-popup-title">
+      <div class="party-popup-kicker">GIGGLES & SHITZ PRODUCTIONS</div>
+      <div class="party-popup-decor">✦ 🎃 ✦</div>
+      <h1 id="party-popup-title">TODAY'S THE DAY</h1>
+      <h2>HALLOPARTY 26</h2>
+      <p class="party-popup-intro">The night we've been waiting for.</p>
+      <div class="party-popup-divider"></div>
+      <div class="party-popup-date">SATURDAY 31 OCTOBER</div>
+      <div class="party-popup-time">8:00 PM</div>
+      <div class="party-popup-details">
+        <div><span>📍</span><strong>8 Coranto Street, Wareemba</strong></div>
+        <div><span>👻</span><strong>Costumes compulsory</strong></div>
+        <div><span>🍻</span><strong>BYO drinks</strong></div>
+        <div><span>👯</span><strong>Bring up to 2 friends</strong></div>
+        <div><span>🎧</span><strong>DJ Shawn Alvyss</strong></div>
+      </div>
+      <p class="party-popup-final">COME READY TO PARTY.</p>
+      <button type="button" id="party-popup-close">LET'S GET SPOOKY 👻</button>
+      <div class="party-popup-footer">GIGGLES & SHITZ PRODUCTIONS · HALLOPARTY 26</div>
+    </div>
+  </div>
+
+  <style>
+    .party-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(8, 6, 5, 0.88);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      overflow-y: auto;
+    }
+    .party-popup[aria-hidden="true"] { display: none; }
+    .party-popup-card {
+      width: 100%;
+      max-width: 470px;
+      max-height: 94vh;
+      overflow-y: auto;
+      box-sizing: border-box;
+      padding: 32px 28px 25px;
+      border: 1px solid #b96a32;
+      border-radius: 18px;
+      background: radial-gradient(ellipse at top, #422619 0%, #21140f 55%, #160f0c 100%);
+      color: #fff4e9;
+      text-align: center;
+      box-shadow: 0 20px 80px rgba(0,0,0,.65);
+      font-family: inherit;
+    }
+    .party-popup-kicker {
+      color: #e9a15e;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+    .party-popup-decor { margin-top: 19px; font-size: 25px; }
+    .party-popup-card h1 {
+      margin: 10px 0 4px;
+      color: #f5a34f;
+      font-size: clamp(27px, 7vw, 39px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+    .party-popup-card h2 {
+      margin: 10px 0 0;
+      color: #fff8f0;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 3px;
+    }
+    .party-popup-intro { margin: 9px 0 17px; color: #e8cdb7; font-size: 14px; }
+    .party-popup-divider { height: 1px; background: #80502e; margin: 18px 0; }
+    .party-popup-date { color: #f5a34f; font-size: 15px; font-weight: 900; letter-spacing: 2px; }
+    .party-popup-time { margin: 4px 0 19px; font-size: 38px; font-weight: 900; }
+    .party-popup-details {
+      display: grid;
+      gap: 10px;
+      padding: 17px;
+      border: 1px solid rgba(224, 147, 83, .25);
+      border-radius: 12px;
+      background: rgba(255,255,255,.055);
+      text-align: left;
+    }
+    .party-popup-details div { display: flex; align-items: center; gap: 11px; font-size: 14px; }
+    .party-popup-details span { width: 23px; flex: 0 0 23px; font-size: 18px; text-align: center; }
+    .party-popup-final { margin: 22px 0 15px; color: #f5a34f; font-size: 17px; font-weight: 900; letter-spacing: 1.5px; }
+    #party-popup-close {
+      width: 100%;
+      padding: 15px 12px;
+      border: 0;
+      border-radius: 9px;
+      background: #f5a34f;
+      color: #21150e;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    #party-popup-close:hover { background: #ffc078; }
+    .party-popup-footer { margin-top: 17px; color: #bda18b; font-size: 9px; letter-spacing: 1.5px; }
+    @media (max-width: 480px) {
+      .party-popup { padding: 10px; }
+      .party-popup-card { padding: 25px 19px 20px; }
+      .party-popup-details div { font-size: 13px; }
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const popup = document.getElementById('halloparty-popup');
+      const closeButton = document.getElementById('party-popup-close');
+      if (!popup || !closeButton) return;
+
+      try {
+        if (sessionStorage.getItem('halloparty_popup_seen') === 'yes') return;
+      } catch (error) {}
+
+      popup.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      const closePopup = () => {
+        popup.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        try { sessionStorage.setItem('halloparty_popup_seen', 'yes'); } catch (error) {}
+      };
+
+      closeButton.addEventListener('click', closePopup);
+      popup.addEventListener('click', (event) => {
+        if (event.target === popup) closePopup();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closePopup();
+      });
+    })();
+  </script>
+
 </body>
 </html>
